@@ -85,6 +85,17 @@ func ToGrid(s string) [][]int {
 	return result
 }
 
+func ToByteGrid(s string) [][]byte {
+	lines := strings.Split(s, "\n")
+	result := make([][]byte, 0, len(lines))
+
+	for _, l := range lines {
+		result = append(result, []byte(l))
+	}
+
+	return result
+}
+
 func ValidCoordinate3D[U any](i, j, k int, space [][][]U) bool {
 	if i < 0 || i >= len(space) {
 		return false
