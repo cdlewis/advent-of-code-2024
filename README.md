@@ -13,4 +13,5 @@ Disclaimer: in these solutions, I optimize for speed to submit a valid answer to
 | [Day 4](https://adventofcode.com/2024/day/4) | ⭐ | ⭐ |
 | [Day 5](https://adventofcode.com/2024/day/5) | ⭐ | ⭐ |
 | [Day 6](https://adventofcode.com/2024/day/6) | ⭐ | ⭐ |
+| [Day 7](https://adventofcode.com/2024/day/7) | ⭐ | ⭐ |
 <!--- advent_readme_stars table --->
