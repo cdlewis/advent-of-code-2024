@@ -11,6 +11,10 @@ func ValidCoordinate[U any](i int, j int, grid [][]U) bool {
 	return i >= 0 && j >= 0 && i < len(grid) && j < len(grid[0])
 }
 
+func ValidPointCoordinate[U any](point [2]int, grid [][]U) bool {
+	return ValidCoordinate(point[0], point[1], grid)
+}
+
 var Directions = [][]int{{0, 1}, {1, 0}, {0, -1}, {-1, 0}}
 
 var DirectionsDiagonal = [][2]int{
@@ -113,9 +117,11 @@ func ValidCoordinate3D[U any](i, j, k int, space [][][]U) bool {
 }
 
 func AddPoints(x, y [2]int) [2]int {
-	x[0] += y[0]
-	x[1] += y[1]
-	return x
+	return [2]int{x[0] + y[0], x[1] + y[1]}
+}
+
+func SubtractPoints(x, y [2]int) [2]int {
+	return [2]int{x[0] - y[0], x[1] - y[1]}
 }
 
 func BoundingBox[U any](graph map[[2]int]U) (int, int, int, int) {
