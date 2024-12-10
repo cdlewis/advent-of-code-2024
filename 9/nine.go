@@ -3,7 +3,7 @@ package nine
 import (
 	"slices"
 
-	"github.com/cdlewis/advent-of-code/util"
+	"github.com/cdlewis/advent-of-code/util/aoc"
 )
 
 type File struct {
@@ -13,7 +13,7 @@ type File struct {
 }
 
 func Nine() int {
-	diskMap := util.GetInput(9, false, "2333133121414131402")
+	diskMap := aoc.GetInput(9, false, "2333133121414131402")
 
 	var freeBlocks []File
 	var disk []File

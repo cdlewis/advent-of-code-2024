@@ -1,19 +1,20 @@
 package eight
 
 import (
-	"github.com/cdlewis/advent-of-code/util"
+	"github.com/cdlewis/advent-of-code/util/aoc"
+	"github.com/cdlewis/advent-of-code/util/grid"
 )
 
 type Tile struct {
-	start       [2]int
-	position    [2]int
-	direction   [2]int
+	start       grid.Point
+	position    grid.Point
+	direction   grid.Point
 	antennaType byte
 }
 
 func Eight() int {
 	uniquePoints := map[[2]int]struct{}{}
-	grid := util.ToByteGrid(util.GetInput(8, false, ""))
+	grid := grid.ToByteGrid(aoc.GetInput(8, false, ""))
 	for idx, i := range grid {
 		for jdx, j := range i {
 			if j == '.' {
@@ -27,11 +28,11 @@ func Eight() int {
 	return len(uniquePoints)
 }
 
-func explore(start [2]int, grid [][]byte, points map[[2]int]struct{}) {
+func explore(start grid.Point, floorMap grid.Grid[byte], points map[[2]int]struct{}) {
 	var q []Tile
-	for _, d := range util.DirectionsDiagonal {
-		newPosition := util.AddPoints(start, d)
-		if !util.ValidPointCoordinate(newPosition, grid) {
+	for _, d := range grid.DirectionsDiagonal {
+		newPosition := start.Add(d)
+		if !floorMap.ValidPoint(newPosition) {
 			continue
 		}
 
@@ -39,7 +40,7 @@ func explore(start [2]int, grid [][]byte, points map[[2]int]struct{}) {
 			start:       start,
 			position:    newPosition,
 			direction:   d,
-			antennaType: grid[start[0]][start[1]],
+			antennaType: floorMap.Get(start),
 		})
 	}
 
@@ -55,26 +56,26 @@ func explore(start [2]int, grid [][]byte, points map[[2]int]struct{}) {
 		}
 		seen[curr.position] = struct{}{}
 
-		if grid[curr.position[0]][curr.position[1]] == curr.antennaType {
+		if floorMap.Get(curr.position) == curr.antennaType {
 			seenSameAntenna = true
 
-			moved := util.SubtractPoints(curr.position, curr.start)
+			moved := curr.position.Subtract(curr.start)
 
-			firstPoint := util.AddPoints(curr.position, moved)
-			for util.ValidPointCoordinate(firstPoint, grid) {
+			firstPoint := curr.position.Add(moved)
+			for floorMap.ValidPoint(firstPoint) {
 				points[firstPoint] = struct{}{}
-				firstPoint = util.AddPoints(firstPoint, moved)
+				firstPoint = firstPoint.Add(moved)
 			}
 
-			secondPoint := util.SubtractPoints(curr.start, moved)
-			for util.ValidPointCoordinate(secondPoint, grid) {
+			secondPoint := curr.start.Subtract(moved)
+			for floorMap.ValidPoint(secondPoint) {
 				points[secondPoint] = struct{}{}
 
-				secondPoint = util.SubtractPoints(secondPoint, moved)
+				secondPoint = secondPoint.Subtract(moved)
 			}
 		}
 
-		for _, d := range util.DirectionsDiagonal {
+		for _, d := range grid.DirectionsDiagonal {
 			if curr.direction[0] != 0 && curr.direction[0] != d[0] {
 				continue
 			}
@@ -83,8 +84,8 @@ func explore(start [2]int, grid [][]byte, points map[[2]int]struct{}) {
 				continue
 			}
 
-			newPosition := util.AddPoints(curr.position, d)
-			if !util.ValidPointCoordinate(newPosition, grid) {
+			newPosition := curr.position.Add(d)
+			if !floorMap.ValidPoint(newPosition) {
 				continue
 			}
 

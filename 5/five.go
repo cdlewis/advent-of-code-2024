@@ -4,11 +4,12 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/cdlewis/advent-of-code/util"
+	"github.com/cdlewis/advent-of-code/util/aoc"
+	"github.com/cdlewis/advent-of-code/util/cast"
 )
 
 func Five() int {
-	rawInput := strings.Split(util.GetInput(5, false, ""), "\n")
+	rawInput := strings.Split(aoc.GetInput(5, false, ""), "\n")
 	sectionEnd := slices.Index(rawInput, "")
 	rawRules := rawInput[:sectionEnd]
 	rawManuals := rawInput[sectionEnd+1:]
@@ -93,7 +94,7 @@ func Five() int {
 			stack = append(stack, needsPages...)
 		}
 
-		sumMid += util.ToInt(newManual[len(newManual)/2])
+		sumMid += cast.ToInt(newManual[len(newManual)/2])
 	}
 
 	return sumMid

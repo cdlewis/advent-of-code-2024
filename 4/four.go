@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cdlewis/advent-of-code/util"
+	"github.com/cdlewis/advent-of-code/util/aoc"
 )
 
 var testData = `MMMSXXMASM
@@ -19,7 +19,7 @@ MAMMMXMMMM
 MXMXAXMASX`
 
 func Four() int {
-	wordsearch := strings.Split(util.GetInput(4, false, testData), "\n")
+	wordsearch := strings.Split(aoc.GetInput(4, false, testData), "\n")
 
 	count := 0
 	for i := 1; i < len(wordsearch)-1; i++ {

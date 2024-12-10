@@ -6,6 +6,8 @@ import (
 	"strings"
 
 	"github.com/cdlewis/advent-of-code/util"
+	"github.com/cdlewis/advent-of-code/util/aoc"
+	"github.com/cdlewis/advent-of-code/util/cast"
 )
 
 var testData = `7 6 4 2 1
@@ -16,11 +18,11 @@ var testData = `7 6 4 2 1
 1 3 6 7 9`
 
 func Two() int {
-	reports := strings.Split(util.GetInput(2, false, testData), "\n")
+	reports := strings.Split(aoc.GetInput(2, false, testData), "\n")
 
 	safe := 0
 	for _, r := range reports {
-		report := util.Map(strings.Split(r, " "), util.ToInt[string])
+		report := util.Map(strings.Split(r, " "), cast.ToInt[string])
 
 		valid := checkReport(report)
 		if valid {

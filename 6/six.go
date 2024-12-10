@@ -4,7 +4,8 @@ import (
 	"runtime"
 	"sync"
 
-	"github.com/cdlewis/advent-of-code/util"
+	"github.com/cdlewis/advent-of-code/util/aoc"
+	"github.com/cdlewis/advent-of-code/util/grid"
 )
 
 var playerStates = map[byte][2]int{
@@ -22,8 +23,8 @@ var nextState = map[[2]int][2]int{
 }
 
 type GuardState struct {
-	Position  [2]int
-	Direction [2]int
+	Position  grid.Point
+	Direction grid.Point
 }
 
 func (g GuardState) Serialize() [4]int {
@@ -31,7 +32,7 @@ func (g GuardState) Serialize() [4]int {
 }
 
 func Six() int {
-	grid := util.ToByteGrid(util.GetInput(6, false, ""))
+	grid := grid.ToByteGrid(aoc.GetInput(6, false, ""))
 
 	startingPosition := getInitialState(grid)
 	chunks := runtime.NumCPU()
@@ -106,7 +107,7 @@ func getInitialState(grid [][]byte) GuardState {
 
 func hasCycle(
 	state GuardState,
-	grid [][]byte,
+	floorMap grid.Grid[byte],
 	newBarrierI int,
 	newBarrierJ int,
 ) bool {
@@ -120,17 +121,15 @@ func hasCycle(
 
 		seen[serializedState] = struct{}{}
 
-		nextI := state.Position[0] + state.Direction[0]
-		nextJ := state.Position[1] + state.Direction[1]
-		if !util.ValidCoordinate(nextI, nextJ, grid) {
+		newPoint := state.Position.Add(state.Direction)
+		if !floorMap.ValidPoint(newPoint) {
 			return false
 		}
 
-		if (nextI == newBarrierI && nextJ == newBarrierJ) || grid[nextI][nextJ] == '#' {
+		if (newPoint[0] == newBarrierI && newPoint[1] == newBarrierJ) || floorMap.Get(newPoint) == '#' {
 			state.Direction = nextState[state.Direction]
 		} else {
-			state.Position[0] = nextI
-			state.Position[1] = nextJ
+			state.Position = newPoint
 		}
 	}
 }

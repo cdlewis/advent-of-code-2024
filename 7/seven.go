@@ -5,6 +5,8 @@ import (
 	"strings"
 
 	"github.com/cdlewis/advent-of-code/util"
+	"github.com/cdlewis/advent-of-code/util/aoc"
+	"github.com/cdlewis/advent-of-code/util/cast"
 )
 
 type Equation struct {
@@ -13,14 +15,14 @@ type Equation struct {
 }
 
 func Seven() int {
-	rawEquations := strings.Split(util.GetInput(7, false, ""), "\n")
+	rawEquations := strings.Split(aoc.GetInput(7, false, ""), "\n")
 
 	result := 0
 	for _, e := range rawEquations {
 		tokens := strings.Split(e, " ")
 		equation := Equation{
-			Target: util.ToInt(strings.TrimSuffix(tokens[0], ":")),
-			Values: util.Map(tokens[1:], util.ToInt[string]),
+			Target: cast.ToInt(strings.TrimSuffix(tokens[0], ":")),
+			Values: util.Map(tokens[1:], cast.ToInt[string]),
 		}
 
 		if isValid(equation) {
@@ -35,7 +37,7 @@ var operations = [](func(x, y int) int){
 	func(x, y int) int { return x + y },
 	func(x, y int) int { return x * y },
 	func(x, y int) int {
-		return util.ToInt(strconv.Itoa(x) + strconv.Itoa(y))
+		return cast.ToInt(strconv.Itoa(x) + strconv.Itoa(y))
 	},
 }
 

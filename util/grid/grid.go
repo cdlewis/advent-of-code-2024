@@ -1,11 +1,43 @@
-package util
+package grid
 
 import (
 	"fmt"
 	"math"
-	"regexp"
 	"strings"
+
+	"github.com/cdlewis/advent-of-code/util/cast"
 )
+
+type Point [2]int
+
+func (p Point) Add(another Point) Point {
+	return AddPoints(p, another)
+}
+
+func (p Point) Subtract(another Point) Point {
+	return SubtractPoints(p, another)
+}
+
+type Grid[T any] [][]T
+
+func (g Grid[T]) ValidPoint(point Point) bool {
+	return ValidPointCoordinate(point, g)
+}
+
+func (g Grid[T]) Get(point Point) T {
+	return g[point[0]][point[1]]
+}
+
+func (g Grid[T]) GetAdjacent(point Point) []Point {
+	var result []Point
+	for _, i := range Directions {
+		newPoint := point.Add(i)
+		if g.ValidPoint(newPoint) {
+			result = append(result, newPoint)
+		}
+	}
+	return result
+}
 
 func ValidCoordinate[U any](i int, j int, grid [][]U) bool {
 	return i >= 0 && j >= 0 && i < len(grid) && j < len(grid[0])
@@ -15,7 +47,7 @@ func ValidPointCoordinate[U any](point [2]int, grid [][]U) bool {
 	return ValidCoordinate(point[0], point[1], grid)
 }
 
-var Directions = [][]int{{0, 1}, {1, 0}, {0, -1}, {-1, 0}}
+var Directions = [][2]int{{0, 1}, {1, 0}, {0, -1}, {-1, 0}}
 
 var DirectionsDiagonal = [][2]int{
 	{-1, -1}, {-1, 0}, {-1, 1},
@@ -78,12 +110,14 @@ func ShortestUnweightedPath[U any](graph [][]U, start [2]int, isEnd func(x [2]in
 
 func ToGrid(s string) [][]int {
 	lines := strings.Split(s, "\n")
-	result := make([][]int, len(lines))
+	result := make([][]int, 0, len(lines))
 
-	re := regexp.MustCompile(`(-?[0-9])+`)
-
-	for idx, l := range lines {
-		result[idx] = Map(re.FindAllString(l, -1), ToInt[string])
+	for _, l := range lines {
+		line := make([]int, 0, len(l))
+		for _, j := range l {
+			line = append(line, cast.ToInt(j))
+		}
+		result = append(result, line)
 	}
 
 	return result
@@ -127,10 +161,10 @@ func SubtractPoints(x, y [2]int) [2]int {
 func BoundingBox[U any](graph map[[2]int]U) (int, int, int, int) {
 	minX, minY, maxX, maxY := math.MaxInt, math.MaxInt, math.MinInt, math.MinInt
 	for pos := range graph {
-		minY = Min(minY, pos[0])
-		maxY = Max(maxY, pos[0])
-		minX = Min(minX, pos[1])
-		maxX = Max(maxX, pos[1])
+		minY = min(minY, pos[0])
+		maxY = max(maxY, pos[0])
+		minX = min(minX, pos[1])
+		maxX = max(maxX, pos[1])
 	}
 	return minX, minY, maxX, maxY
 }
