@@ -10,7 +10,7 @@ func (l *List) Append(i int) {
 		l.Head = &Node{Val: i}
 		l.Tail = l.Head
 	} else {
-		l.Tail = l.Tail.Append(i)
+		l.Tail = l.Tail.InsertAfter(i)
 	}
 }
 
@@ -103,7 +103,7 @@ func (n *Node) ToSlice() []int {
 	return results
 }
 
-func (n *Node) Append(i int) *Node {
+func (n *Node) InsertAfter(i int) *Node {
 	next := &Node{Val: i}
 	next.Prev = n
 	n.Next = next
