@@ -18,4 +18,5 @@ Disclaimer: in these solutions, I optimize for speed to submit a valid answer to
 | [Day 9](https://adventofcode.com/2024/day/9) | ⭐ | ⭐ |
 | [Day 10](https://adventofcode.com/2024/day/10) | ⭐ | ⭐ |
 | [Day 11](https://adventofcode.com/2024/day/11) | ⭐ | ⭐ |
+| [Day 12](https://adventofcode.com/2024/day/12) | ⭐ |   |
 <!--- advent_readme_stars table --->
