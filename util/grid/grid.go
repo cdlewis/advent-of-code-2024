@@ -28,6 +28,10 @@ func (g Grid[T]) Get(point Point) T {
 	return g[point[0]][point[1]]
 }
 
+func (g Grid[T]) Set(point Point, val T) {
+	g[point[0]][point[1]] = val
+}
+
 func (g Grid[T]) GetAdjacent(point Point) []Point {
 	var result []Point
 	for _, i := range Directions {
@@ -47,7 +51,12 @@ func ValidPointCoordinate[U any](point [2]int, grid [][]U) bool {
 	return ValidCoordinate(point[0], point[1], grid)
 }
 
-var Directions = [][2]int{{0, 1}, {1, 0}, {0, -1}, {-1, 0}}
+var UP = Point{-1, 0}
+var DOWN = Point{1, 0}
+var LEFT = Point{0, -1}
+var RIGHT = Point{0, 1}
+
+var Directions = [][2]int{UP, DOWN, LEFT, RIGHT}
 
 var DirectionsDiagonal = [][2]int{
 	{-1, -1}, {-1, 0}, {-1, 1},
@@ -108,7 +117,7 @@ func ShortestUnweightedPath[U any](graph [][]U, start [2]int, isEnd func(x [2]in
 	return -1, false
 }
 
-func ToGrid(s string) [][]int {
+func ToGrid(s string) Grid[int] {
 	lines := strings.Split(s, "\n")
 	result := make([][]int, 0, len(lines))
 
@@ -123,7 +132,7 @@ func ToGrid(s string) [][]int {
 	return result
 }
 
-func ToByteGrid(s string) [][]byte {
+func ToByteGrid(s string) Grid[byte] {
 	lines := strings.Split(s, "\n")
 	result := make([][]byte, 0, len(lines))
 
