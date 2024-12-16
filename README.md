@@ -21,4 +21,5 @@ Disclaimer: in these solutions, I optimize for speed to submit a valid answer to
 | [Day 12](https://adventofcode.com/2024/day/12) | ⭐ | ⭐ |
 | [Day 13](https://adventofcode.com/2024/day/13) | ⭐ | ⭐ |
 | [Day 14](https://adventofcode.com/2024/day/14) | ⭐ | ⭐ |
+| [Day 15](https://adventofcode.com/2024/day/15) | ⭐ | ⭐ |
 <!--- advent_readme_stars table --->
