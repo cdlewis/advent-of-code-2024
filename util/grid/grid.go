@@ -18,6 +18,36 @@ func (p Point) Subtract(another Point) Point {
 	return SubtractPoints(p, another)
 }
 
+func (p Point) RotateClockwise() Point {
+	switch p {
+	case LEFT:
+		return UP
+	case UP:
+		return RIGHT
+	case RIGHT:
+		return DOWN
+	case DOWN:
+		return LEFT
+	}
+
+	panic("impossible state")
+}
+
+func (p Point) RotateCounterClockwise() Point {
+	switch p {
+	case LEFT:
+		return DOWN
+	case DOWN:
+		return RIGHT
+	case RIGHT:
+		return UP
+	case UP:
+		return LEFT
+	}
+
+	panic("impossible state")
+}
+
 type Grid[T any] [][]T
 
 func (g Grid[T]) ValidPoint(point Point) bool {
@@ -41,6 +71,20 @@ func (g Grid[T]) GetAdjacent(point Point) []Point {
 		}
 	}
 	return result
+}
+
+func (g Grid[T]) Print() {
+	for _, i := range g {
+		for _, j := range i {
+			byteVal, ok := any(j).(byte)
+			if ok {
+				fmt.Print(string(byteVal))
+			} else {
+				fmt.Print(j)
+			}
+		}
+		fmt.Println()
+	}
 }
 
 func ValidCoordinate[U any](i int, j int, grid [][]U) bool {

@@ -17,8 +17,10 @@ func (s Set[T]) Exists(val T) bool {
 	return ok
 }
 
-func (s Set[T]) Add(val T) {
-	s[val] = struct{}{}
+func (s Set[T]) Add(val ...T) {
+	for _, v := range val {
+		s[v] = struct{}{}
+	}
 }
 
 func (s Set[T]) Remove(val T) {
@@ -39,4 +41,8 @@ func (s Set[T]) Combine(another Set[T]) Set[T] {
 	newSet := maps.Clone(s)
 	maps.Copy(newSet, another)
 	return newSet
+}
+
+func (s Set[T]) Extend(another Set[T]) {
+	maps.Copy(s, another)
 }
