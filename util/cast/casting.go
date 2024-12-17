@@ -2,8 +2,11 @@ package cast
 
 import (
 	"fmt"
+	"regexp"
 	"strconv"
 )
+
+var _intRe = regexp.MustCompile(`([0-9]+)`)
 
 // Do digusting things to make AoC questions slightly quicker to solve
 func ToInt[U any](arg U) int {
@@ -35,6 +38,22 @@ func ToInt[U any](arg U) int {
 	default:
 		panic(fmt.Sprintf("unhandled type for int casting (%T)", arg))
 	}
+}
+
+func FindInt(s string) int {
+	intString := _intRe.FindStringSubmatch(s)
+	result, _ := strconv.ParseInt(intString[1], 10, 64)
+	return int(result)
+}
+
+func FindAllInt(s string) []int {
+	var result []int
+	intString := _intRe.FindAllStringSubmatch(s, -1)
+	for _, i := range intString {
+		intVal, _ := strconv.ParseInt(i[1], 10, 64)
+		result = append(result, int(intVal)) 
+	}
+	return result
 }
 
 func ToString(arg interface{}) string {
