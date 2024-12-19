@@ -124,13 +124,18 @@ var Directions3D = [][]int{
 	{0, 0, -1},
 }
 
-func ShortestUnweightedPath[U any](graph [][]U, start [2]int, isEnd func(x [2]int) bool, validatePath func(x [2]int, y [2]int) bool) (int, bool) {
+func ShortestUnweightedPath[U any](
+	graph Grid[U],
+	start Point,
+	isEnd func(Point) bool,
+	validatePath func(Point, Point) bool,
+) (int, bool) {
 	steps := 0
-	stack := [][2]int{start}
-	visited := map[[2]int]bool{}
+	stack := []Point{start}
+	visited := map[Point]bool{}
 
 	for len(stack) > 0 {
-		newStack := [][2]int{}
+		var newStack []Point
 
 		for len(stack) > 0 {
 			curr := stack[0]
@@ -147,8 +152,8 @@ func ShortestUnweightedPath[U any](graph [][]U, start [2]int, isEnd func(x [2]in
 			visited[curr] = true
 
 			for _, d := range Directions {
-				nextCoord := [2]int{curr[0] + d[0], curr[1] + d[1]}
-				if ValidCoordinate(curr[0]+d[0], curr[1]+d[1], graph) && validatePath(curr, nextCoord) {
+				nextCoord := curr.Add(d)
+				if graph.ValidPoint(nextCoord) && validatePath(curr, nextCoord) {
 					newStack = append(newStack, nextCoord)
 				}
 			}
