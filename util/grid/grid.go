@@ -58,6 +58,14 @@ func (g Grid[T]) Get(point Point) T {
 	return g[point[0]][point[1]]
 }
 
+func (g Grid[T]) GetOrElse(point Point, orElse T) T {
+	if !g.ValidPoint(point) {
+		return orElse
+	}
+
+	return g.Get(point)
+}
+
 func (g Grid[T]) Set(point Point, val T) {
 	g[point[0]][point[1]] = val
 }
