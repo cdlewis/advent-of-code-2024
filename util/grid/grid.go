@@ -18,6 +18,24 @@ func (p Point) Subtract(another Point) Point {
 	return SubtractPoints(p, another)
 }
 
+func (p Point) ToDirection() []Point {
+	var results []Point
+
+	if p[0] > 0 {
+		results = append(results, DOWN)
+	} else if p[0] < 0 {
+		results = append(results, UP)
+	}
+
+	if p[1] > 0 {
+		results = append(results, RIGHT)
+	} else if p[1] < 0 {
+		results = append(results, LEFT)
+	}
+
+	return results
+}
+
 func (p Point) RotateClockwise() Point {
 	switch p {
 	case LEFT:
@@ -48,7 +66,7 @@ func (p Point) RotateCounterClockwise() Point {
 	panic("impossible state")
 }
 
-type Grid[T any] [][]T
+type Grid[T comparable] [][]T
 
 func (g Grid[T]) ValidPoint(point Point) bool {
 	return ValidPointCoordinate(point, g)
@@ -81,6 +99,18 @@ func (g Grid[T]) GetAdjacent(point Point) []Point {
 	return result
 }
 
+func (g Grid[T]) Find(needle T) (Point, bool) {
+	for idx := range g {
+		for jdx := range g[idx] {
+			if g[idx][jdx] == needle {
+				return Point{idx, jdx}, true
+			}
+		}
+	}
+
+	return Point{}, false
+}
+
 func (g Grid[T]) Print() {
 	for _, i := range g {
 		for _, j := range i {
@@ -108,7 +138,7 @@ var DOWN = Point{1, 0}
 var LEFT = Point{0, -1}
 var RIGHT = Point{0, 1}
 
-var Directions = [][2]int{UP, DOWN, LEFT, RIGHT}
+var Directions = []Point{UP, DOWN, LEFT, RIGHT}
 
 var DirectionsDiagonal = [][2]int{
 	{-1, -1}, {-1, 0}, {-1, 1},
@@ -132,7 +162,7 @@ var Directions3D = [][]int{
 	{0, 0, -1},
 }
 
-func ShortestUnweightedPath[U any](
+func ShortestUnweightedPath[U comparable](
 	graph Grid[U],
 	start Point,
 	isEnd func(Point) bool,
