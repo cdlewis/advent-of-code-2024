@@ -1,6 +1,9 @@
 package util
 
-import "fmt"
+import (
+	"fmt"
+	"iter"
+)
 
 func Map[T, U any](s []T, f func(T) U) []U {
 	r := make([]U, len(s))
@@ -118,4 +121,12 @@ func IntersectionString(strings ...string) string {
 
 func RotateRight[U any](s []U) []U {
 	return append(s[1:], s[0])
+}
+
+func FromIter[T any](input iter.Seq[T]) []T {
+	var result []T
+	for i := range input {
+		result = append(result, i)
+	}
+	return result
 }

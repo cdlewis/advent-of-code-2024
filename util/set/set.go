@@ -46,3 +46,12 @@ func (s Set[T]) Combine(another Set[T]) Set[T] {
 func (s Set[T]) Extend(another Set[T]) {
 	maps.Copy(s, another)
 }
+
+func (s Set[T]) ForAll(fn func(item T) bool) bool {
+	for i := range s {
+		if !fn(i) {
+			return false
+		}
+	}
+	return true
+}
